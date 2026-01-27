@@ -12,7 +12,10 @@ import SwiftUI
 struct GuacChainApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            OrderDetailView()
+                .onAppear {
+                    Thread.sleep(forTimeInterval: 3)
+                }
         }
     }
 }
