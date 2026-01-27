@@ -55,7 +55,7 @@ struct OrderDetailView: View {
                     .font(.title)
                 VStack(alignment: .leading) {
                     Text("฿ 0.00000")
-                    Text("\(selectedCurrency.symbol()) 0.00000")
+                    Text("\(selectedCurrency.symbol()) \(calcTotal().formatted(.number.precision(.fractionLength(2))))")
                 }
             }
             
@@ -65,9 +65,12 @@ struct OrderDetailView: View {
     
     private func calcTotal() -> Double {
         
+        let tacoCost = Double(tacoQty) * Price.taco.rawValue
+        let burritoCost = Double(burritoQty) * Price.taco.rawValue
+        let chipsCost = Double(chipsQty) * Price.taco.rawValue
+        let horchataCost = Double(horchataQty) * Price.taco.rawValue
         
-        
-        return 0.0
+        return tacoCost+burritoCost+chipsCost+horchataCost
     }
 }
 
