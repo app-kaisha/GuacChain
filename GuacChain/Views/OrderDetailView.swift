@@ -16,7 +16,7 @@ struct OrderDetailView: View {
     @State private var horchataQty = 0
     
     @State private var selectedCurrency: Currency = .usd
-    
+    @State private var currencyVM = CurrencyViewModel()
     
     var body: some View {
         VStack {
@@ -54,13 +54,40 @@ struct OrderDetailView: View {
                 Text("Total:")
                     .font(.title)
                 VStack(alignment: .leading) {
-                    Text("฿ 0.00000")
-                    Text("\(selectedCurrency.symbol()) \(calcTotal().formatted(.number.precision(.fractionLength(2))))")
+                    Text("฿ \(calcBitcoin())")
+                    Text("\(selectedCurrency.symbol()) \(calcBillInCurrency().formatted(.number.precision(.fractionLength(2))))")
                 }
             }
             
             
         }
+        .task {
+            //await currencyVM.getData()
+        }
+    }
+    
+    func calcBillInCurrency() -> Double {
+        guard currencyVM.usdPerBTC > 0 else { return calcTotal() }
+        
+        switch selectedCurrency {
+        case .usd:
+            return calcTotal()
+        case .gbp:
+            return calcTotal() / (currencyVM.usdPerBTC / currencyVM.gbpPerBTC)
+        case .eur:
+            return calcTotal() / (currencyVM.usdPerBTC / currencyVM.eurPerBTC)
+        }
+    }
+    
+    private func calcBitcoin() -> String {
+        let total = calcTotal()/currencyVM.usdPerBTC
+        
+        if total > 0 {
+            return "\(total.formatted(.number.precision(.fractionLength(6))))"
+        } else {
+            return "0.000000"
+        }
+        
     }
     
     private func calcTotal() -> Double {
