@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct OrderDetailView: View {
     
@@ -15,8 +16,13 @@ struct OrderDetailView: View {
     @State private var chipsQty = 0
     @State private var horchataQty = 0
     @State private var selectedCurrency: Currency = .usd
+    @State private var orderTitle = ""
 
     @Environment(CurrencyViewModel.self) private var currencyVM
+    @Environment(\.dismiss) private var dismiss
+    
+    @Environment(\.modelContext) private var modelContext
+    @State var order: Order
     
     var body: some View {
         VStack {
@@ -59,7 +65,54 @@ struct OrderDetailView: View {
                 }
             }
             
-            
+            HStack {
+                Text("Order Title:")
+                    .bold()
+                TextField("name this order", text: $orderTitle)
+                    .textFieldStyle(.roundedBorder)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(.gray.opacity(0.5), lineWidth: 1)
+                    }
+            }
+            .padding(.horizontal)
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel", systemImage: "xmark") {
+                    dismiss()
+                }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save", systemImage: "checkmark") {
+                    order.tacoQty = tacoQty
+                    order.burritoQty = burritoQty
+                    order.chipsQty = chipsQty
+                    order.horchataQty = horchataQty
+                    order.currencySelection = selectedCurrency
+                    order.title = orderTitle
+                    order.orderedOn = Date()
+                    
+                    modelContext.insert(order)
+                    
+                    // for simulator only
+                    guard let _ = try? modelContext.save() else {
+                        print("😡 ERROR: Save on DetailView did not work")
+                        return
+                    }
+                    
+                    dismiss()
+                }
+            }
+        }
+        .onAppear {
+            tacoQty = order.tacoQty
+            burritoQty = order.burritoQty
+            chipsQty = order.chipsQty
+            horchataQty = order.horchataQty
+            selectedCurrency = order.currencySelection
+            orderTitle = order.title
         }
         .task {
             //await currencyVM.getData()
@@ -80,9 +133,8 @@ struct OrderDetailView: View {
     }
     
     private func calcBitcoin() -> String {
-        let total = calcTotal()/currencyVM.usdPerBTC
-        
-        if total > 0 {
+        let total = (calcTotal()/currencyVM.usdPerBTC)
+        if total > 0 && total < Double.infinity {
             return "\(total.formatted(.number.precision(.fractionLength(6))))"
         } else {
             return "0.000000"
@@ -102,6 +154,9 @@ struct OrderDetailView: View {
 }
 
 #Preview {
-    OrderDetailView()
-        .environment(CurrencyViewModel())
+    NavigationStack {
+        OrderDetailView(order: Order(title: "Post Work-Out Order", tacoQty: 2, burritoQty: 1, chipsQty: 1, horchataQty: 1, currencySelection: .usd))
+            .modelContainer(for: Order.self, inMemory: true)
+            .environment(CurrencyViewModel())
+    }
 }

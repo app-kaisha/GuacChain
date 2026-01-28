@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct GuacChainApp: App {
@@ -15,11 +16,16 @@ struct GuacChainApp: App {
     
     var body: some Scene {
         WindowGroup {
-            OrderDetailView()
+            OrderListView()
                 .environment(currencyVM)
+                .modelContainer(for: Order.self)
                 .onAppear {
                     Thread.sleep(forTimeInterval: 3)
                 }
         }
+    }
+    
+    init() {
+        print(URL.applicationSupportDirectory.path(percentEncoded: false))
     }
 }
