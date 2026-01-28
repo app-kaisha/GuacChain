@@ -104,6 +104,7 @@ struct OrderDetailView: View {
                     
                     dismiss()
                 }
+                .disabled(orderTitle.isEmpty)
             }
         }
         .onAppear {

@@ -24,7 +24,7 @@ struct OrderListView: View {
                 } label: {
                     VStack(alignment: .leading) {
                         HStack {
-                            Text(order.title)
+                            Text("\(order.title)")
                             Spacer()
                             Text("\(order.orderedOn.formatted(date: .numeric, time: .omitted))")
                                 
