@@ -115,7 +115,7 @@ struct OrderDetailView: View {
             orderTitle = order.title
         }
         .task {
-            //await currencyVM.getData()
+            await currencyVM.getData()
         }
     }
     

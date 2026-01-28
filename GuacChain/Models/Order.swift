@@ -44,6 +44,10 @@ extension Order {
         modelContainer.mainContext.insert(Order(title: "Date Night", tacoQty: 3, burritoQty: 1, chipsQty: 1, horchataQty: 2, currencySelection: .usd))
         modelContainer.mainContext.insert(Order(title: "Vacation in UK", tacoQty: 0, burritoQty: 1, chipsQty: 1, horchataQty: 1, currencySelection: .gbp))
         modelContainer.mainContext.insert(Order(title: "Dinner Order", tacoQty: 1, burritoQty: 1, chipsQty: 1, horchataQty: 1, currencySelection: .usd))
+        modelContainer.mainContext.insert(Order(title: "Late Night Snack", tacoQty: 1, burritoQty: 0, chipsQty: 0, horchataQty: 0, currencySelection: .usd))
+        modelContainer.mainContext.insert(Order(title: "Family Madrid Order when Visiting Catalina", tacoQty: 7, burritoQty: 2, chipsQty: 3, horchataQty: 5, currencySelection: .eur))
+        modelContainer.mainContext.insert(Order(title: "Post Exam Order", tacoQty: 0, burritoQty: 1, chipsQty: 1, horchataQty: 1, currencySelection: .usd))
+        modelContainer.mainContext.insert(Order(title: "Quick after hours order", tacoQty: 0, burritoQty: 1, chipsQty: 0, horchataQty: 0, currencySelection: .usd))
         
         return modelContainer
     }

@@ -22,8 +22,18 @@ struct OrderListView: View {
                 NavigationLink {
                     OrderDetailView(order: order)
                 } label: {
-                    Text(order.title)
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(order.title)
+                            Spacer()
+                            Text("\(order.orderedOn.formatted(date: .numeric, time: .omitted))")
+                                
+                        }
                         .font(.title2)
+                        Text(returnQtyLine(order: order))
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
                 }
                 .swipeActions {
                     Button("", systemImage: "trash", role: .destructive) {
@@ -55,6 +65,18 @@ struct OrderListView: View {
             }
         }
 
+    }
+    
+    func returnQtyLine(order: Order) -> String {
+        var orderArray: [String] = []
+        
+        if order.tacoQty != 0 { orderArray.append("Taco: \(order.tacoQty)")}
+        if order.burritoQty != 0 { orderArray.append("Burrito: \(order.burritoQty)")}
+        if order.chipsQty != 0 { orderArray.append("Chips: \(order.chipsQty)")}
+        if order.horchataQty != 0 { orderArray.append("Horchata: \(order.horchataQty)")}
+        
+        return orderArray.joined(separator: ", ")
+        
     }
 }
 
