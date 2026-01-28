@@ -10,9 +10,13 @@ import SwiftUI
 
 @main
 struct GuacChainApp: App {
+    
+    @State private var currencyVM = CurrencyViewModel()
+    
     var body: some Scene {
         WindowGroup {
             OrderDetailView()
+                .environment(currencyVM)
                 .onAppear {
                     Thread.sleep(forTimeInterval: 3)
                 }

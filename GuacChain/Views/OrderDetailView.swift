@@ -14,9 +14,9 @@ struct OrderDetailView: View {
     @State private var burritoQty = 0
     @State private var chipsQty = 0
     @State private var horchataQty = 0
-    
     @State private var selectedCurrency: Currency = .usd
-    @State private var currencyVM = CurrencyViewModel()
+
+    @Environment(CurrencyViewModel.self) private var currencyVM
     
     var body: some View {
         VStack {
@@ -103,4 +103,5 @@ struct OrderDetailView: View {
 
 #Preview {
     OrderDetailView()
+        .environment(CurrencyViewModel())
 }
